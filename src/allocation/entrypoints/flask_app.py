@@ -27,8 +27,8 @@ def allocate_endpoint():
             request.json["orderid"], request.json["sku"], request.json["qty"]
         )
         bus.handle(cmd)
-    except InvalidSku as e:
-        return {"message": str(e)}, 400
+    except InvalidSku:
+        return {"message": "Invalid sku"}, 400
 
     return "OK", 202
 
