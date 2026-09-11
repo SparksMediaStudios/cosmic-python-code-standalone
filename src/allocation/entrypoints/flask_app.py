@@ -28,7 +28,7 @@ def allocate_endpoint():
         )
         bus.handle(cmd)
     except InvalidSku:
-        return {"message": "Invalid sku"}, 400
+        return {"message": f"Invalid sku {cmd.sku}"}, 400
 
     return "OK", 202
 
