@@ -18,7 +18,7 @@ eg https://github.com/cosmicpython/code/tree/chapter_04_service_layer_exercise
 
 ## Requirements
 
-* docker with docker-compose
+* docker with Docker Compose (`docker compose` or `docker-compose`)
 * for chapters 1 and 2, and optionally for the rest: a local python3.8 virtualenv
 
 
@@ -73,4 +73,3 @@ pytest tests/e2e
 ## Makefile
 
 There are more useful commands in the makefile, have a look and try them out.
-

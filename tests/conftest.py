@@ -17,6 +17,19 @@ from allocation import config
 pytest.register_assert_rewrite("tests.e2e.api_client")
 
 
+def get_docker_compose_command():
+    if shutil.which("docker-compose"):
+        return ["docker-compose"]
+    if shutil.which("docker") and subprocess.run(
+        ["docker", "compose", "version"],
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    ).returncode == 0:
+        return ["docker", "compose"]
+    return None
+
+
 @pytest.fixture
 def in_memory_sqlite_db():
     engine = create_engine("sqlite:///:memory:")
@@ -80,10 +93,11 @@ def restart_api():
 @pytest.fixture
 def restart_redis_pubsub():
     wait_for_redis_to_come_up()
-    if not shutil.which("docker-compose"):
+    docker_compose = get_docker_compose_command()
+    if docker_compose is None:
         print("skipping restart, assumes running in container")
         return
     subprocess.run(
-        ["docker-compose", "restart", "-t", "0", "redis_pubsub"],
+        [*docker_compose, "restart", "-t", "0", "redis_pubsub"],
         check=True,
     )
